@@ -43,7 +43,7 @@ This project includes:
  - @Retention
  - @Configuration
  - @EnableHazelcastRepositories
- - @value
+ - @Value
  - @Bean
  - @Profile
  - @Data
@@ -68,10 +68,10 @@ This project includes:
    ```
    docker -v
    ```
-   if docker dont installed: 
+   if docker is not installed: 
    * [Docker For Windows](https://docs.docker.com/docker-for-windows/install/) - Download Setup
    
- - Build docker in root directory
+ - Build docker in project root directory
    ```
    docker build -f Dockerfile -t hazelcast-with-cassandradb .
    ```
