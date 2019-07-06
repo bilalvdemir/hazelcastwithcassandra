@@ -1,0 +1,21 @@
+spring:
+  profiles: dev
+  cloud:
+    config:
+      enabled: false
+
+---
+spring:
+  profiles: k8s-eureka
+  application:
+    name: group-management-core
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8080/eureka/

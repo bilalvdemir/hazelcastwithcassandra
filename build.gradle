@@ -1,0 +1,96 @@
+buildscript {
+  ext {
+    springBootVersion = '1.5.10.RELEASE'
+    springBootGradlePluginVersion = '1.5.10.RELEASE'
+    dependencyManagementPluginVersion = '0.5.2.RELEASE'
+    springCloudDependenciesVersion = 'Edgware.SR2'
+    springCloudNetflixVersion = '1.4.2.RELEASE'
+    jacksonModulesJava8Version = '2.9.4'
+    nettyVersion = '4.1.8.Final'
+    springDataHazelcastVersion = '1.1.1'
+    hazelcastKubernetesVersion = '1.1.0'
+    lombokVersion = '1.18.2'
+    hibernateValidatorVersion = '5.4.2.Final'
+    modelMapperVersion = '1.1.2'
+    logstashLogbackEncoderVersion = '4.11'
+    gradleVersion = '4.5.1'
+  }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootGradlePluginVersion}")
+    classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}")
+  }
+}
+
+plugins {
+	id 'java'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
+
+
+group = 'com.example.bilal'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+  mavenCentral()
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudDependenciesVersion}"
+    mavenBom "org.springframework.cloud:spring-cloud-netflix:${springCloudNetflixVersion}"
+    mavenBom "com.fasterxml.jackson:jackson-bom:${jacksonModulesJava8Version}"
+  }
+}
+
+dependencies {
+  //cloud
+  compile('org.springframework.boot:spring-boot-starter-actuator')
+  compile('org.springframework.boot:spring-boot-starter-web'){
+    exclude module: 'spring-boot-starter-tomcat'
+  }
+  compile('org.springframework.boot:spring-boot-starter-jetty')
+  compile('org.springframework.cloud:spring-cloud-starter-config')
+  compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+  //cassandra
+  compile("org.springframework.data:spring-data-cassandra")
+  compile("io.netty:netty-transport-native-epoll:${nettyVersion}:linux-x86_64")
+  //hazelcast
+  compile("com.hazelcast:spring-data-hazelcast:${springDataHazelcastVersion}")
+  compile("com.hazelcast:hazelcast-kubernetes:${hazelcastKubernetesVersion}")
+  //json
+  compile("org.projectlombok:lombok:${lombokVersion}")
+  compile("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
+  compile("org.modelmapper:modelmapper:${modelMapperVersion}")
+  compile("com.fasterxml.jackson.module:jackson-module-parameter-names")
+  compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
+  compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+  //logstash
+  compile("net.logstash.logback:logstash-logback-encoder:${logstashLogbackEncoderVersion}")
+  //test
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = project.gradleVersion
+}
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy-MM-dd-HHmm')
+    return formattedDate
+}
+
+println 'Gradle version: ' + GradleVersion.current().toString()
+println 'Java version: ' + org.gradle.internal.jvm.Jvm.current()
+
+
+def dockerDeployment = false

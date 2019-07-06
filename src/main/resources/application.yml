@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: hazelcast-with-cassandra
+  data:
+    cassandra:
+      keyspace: hazelcastwithcassandra
+      contact-points: 192.168.0.21
+      port: 9042
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+server:
+  port: 9090
+
+logging:
+  level:
+    com.example: DEBUG
+
+hazelcastWithCassandra:
+  api:
+    version: 1.0
+  path: api
+
+---
+
+spring:
+  profiles: cluster
+
+server:
+  port: 8080
+
+kubernetes:
+  namespace: mynamespace
+  master: https://kubernetes.default.svc.cluster.local
