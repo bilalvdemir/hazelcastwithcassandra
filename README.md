@@ -87,7 +87,11 @@ This project includes:
    ```
    docker run -d --name hazelcast-with-cassandradb -p 9090:9090 hazelcast-with-cassandradb
    ```
-
+ - Run docker image with custom cassandra ip. Updated variable in Application.yml
+   ```
+    docker run -d --name hazelcast-with-cassandradb -p 9090:9090 -e SPRING.DATA.CASSANDRA.CONTACT-POINTS='172.16.44.200' hazelcast-with-cassandradb
+   ```
+   
 ## Contributing
 
 Please read [CHANGELOG.md](https://github.com/bilalvdemir/hazelcastwithcassandra/blob/master/CHANGELOG.md) for details on our code of conduct, and the process for submitting pull requests to us.
